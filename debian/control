@@ -1,13 +1,13 @@
-Source: pmon-menu
+Source: pmon-update
 Section: admin
 Priority: optional
-Standards-Version: 0.1.0
+Maintainer: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Standards-Version: 4.5.0
 Build-Depends: debhelper (>= 10)
 Rules-Requires-Root: no
 
-Package: pmon-menu
+Package: pmon-update
 Depends: linux-base, ${misc:Depends}
-Suggests: flash-kernel
 Architecture: all
 Description: pmon menu update
  Automatically create boot.cfg boot menu for pmon bootloader. Boot menu
