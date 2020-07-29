@@ -185,5 +185,14 @@ title ${PMON_MENU_LABEL} ${_VERSION} (Rescue Target)
 	fi
 done
 
+# Append extra custom config
+if [ -e /boot/pmon/custom.cfg ]
+then
+	_CONFIG="${_CONFIG}
+
+$(cat /boot/pmon/custom.cfg)
+"
+fi
+
 Update "${_PMON_DIRECTORY}/boot.cfg" "${_CONFIG}"
 
