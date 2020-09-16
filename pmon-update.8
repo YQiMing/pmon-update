@@ -17,9 +17,9 @@ This variable specifies which entries pmon\-update is populating. Values are 'de
 .IP "PMON_BOOTDEV=""\fB(wd0,0)\fR""" 4
 This variable specifies the prefix of boot device from pmon point of view, default is (wd0,0).
 .IP "PMON_DEFAULT=""\fB1\fR""" 4
-This variable specifies the default entry to boot. The first entry starts from 1 and so on. Default is 1.
+This variable specifies the default entry to boot. Entries start from index 0. Default is 0.
 .IP "PMON_ENTRIES=""\fBall\fR""" 4
-This variables specifies how many kernel versions should be used to populate the boot configuration. Value is an integer starting with 1, or 'all' to populate for all kernels, default is 'all'.
+This variable specifies how many kernel versions should be used to populate the boot configuration. Value is an integer starting with 1, or 'all' to populate for all kernels, default is 'all'.
 .IP "PMON_MENU_LABEL=""\fBDebian GNU/Linux, kernel\fR""" 4
 This variable specifies the text that is used as a description in the boot menu. Value is an arbitrary string. If lsb_release is installed, the distributors id is automatically determined. If lsb_release is not available, it defaults to 'Debian GNU/Linux, kernel'.
 .IP "PMON_PARAMETERS=""\fBro quiet\fR""" 4

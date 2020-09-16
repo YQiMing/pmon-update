@@ -1,3 +1,12 @@
+pmon-update (0.3.0) unstable; urgency=medium
+
+  * Allow extra custom configs.
+  * Fixed comment handling in in /etc/fstab.
+  * Updated debian/copyright.
+  * Updated manpages.
+
+ -- Boyue Zhang <boyue.zhang@pzhang.net>  Tue, 15 Sep 2020 12:10:09 +0800
+
 pmon-update (0.2.0) unstable; urgency=medium
 
   * Fixed incorrect default entry number

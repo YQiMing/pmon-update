@@ -84,10 +84,13 @@ read _FS_SPEC _FS_FILE _FS_VFSTYPE _FS_MNTOPS _FS_FREQ _FS_PASSNO << EOF
 ${_LINE}
 EOF
 
-		if [ "${_FS_SPEC}" != "#"* ] && [ "${_FS_FILE}" = "/" ]
+		if [ "${_FS_FILE}" = "/" ]
 		then
-			PMON_ROOT="root=${_FS_SPEC}"
-			break
+			case "${_FS_SPEC}" in
+				"#"*) ;;
+				*) PMON_ROOT="root=${_FS_SPEC}"
+				   break ;;
+			esac
 		fi
 	done < /etc/fstab
 fi
@@ -181,6 +184,15 @@ title ${PMON_MENU_LABEL} ${_VERSION} (Rescue Target)
 		break
 	fi
 done
+
+# Append extra custom config
+if [ -e /boot/pmon/custom.cfg ]
+then
+	_CONFIG="${_CONFIG}
+
+$(cat /boot/pmon/custom.cfg)
+"
+fi
 
 Update "${_PMON_DIRECTORY}/boot.cfg" "${_CONFIG}"
 
