@@ -5,7 +5,8 @@ Upstream-Contact: Jiaxun Yang <jiaxun.yang@flygoat.com>
 Files: *
 Copyright: Copyright (C) 2020 Boyue Zhang <boyue.zhang@pzhang.net>
  Copyright (C) 2020 Jiaxun Yang <jiaxun.yang@flygoat.com>
-License: GPL-2
+ Copyright (C) 2006-2012 Daniel Baumann <daniel.baumann@progress-technologies.net>
+ Copyright (C) 2016-2017 Riku Voipio    <riku.voipio@linaro.org>
 
 License: GPL-2
  On Debian and Debian-based systems, a copy of the GNU General Public
