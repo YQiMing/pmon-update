@@ -1,3 +1,11 @@
+pmon-update (0.3.1) unstable; urgency=medium
+
+  * Use loongson-community github address.
+  * Fix format of debian/copyright
+  * Add YunQiang Su to copyright
+
+ -- YunQiang Su <syq@debian.org>  Thu, 12 Nov 2020 10:06:29 +0800
+
 pmon-update (0.3.0) unstable; urgency=medium
 
   * Allow extra custom configs.

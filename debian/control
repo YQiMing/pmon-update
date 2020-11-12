@@ -4,9 +4,9 @@ Priority: optional
 Maintainer: Jiaxun Yang <jiaxun.yang@flygoat.com>
 Standards-Version: 4.5.0
 Build-Depends: debhelper (>= 10)
-Homepage: https://github.com/flygoat/pmon-update
-Vcs-Browser: https://github.com/flygoat/pmon-update
-Vcs-Git: https://github.com/flygoat/pmon-update.git
+Homepage: https://github.com/loongson-community/pmon-update
+Vcs-Browser: https://github.com/loongson-community/pmon-update
+Vcs-Git: https://github.com/loongson-commuinty/pmon-update.git
 
 Package: pmon-update
 Depends: linux-base, ${misc:Depends}
