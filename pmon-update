@@ -36,6 +36,57 @@ Update ()
 	fi
 }
 
+
+function disk2wd
+{
+	flag=-1
+	index=0
+
+	local diskpart=${1##*/}
+	value=$(echo $diskpart | grep nvme)
+	if [ $? -eq 0 ]
+	then
+		local disk=$(echo "$diskpart" | grep '[[:digit:]]\+' -o | head -n1)
+		local order=$(echo "$diskpart" | grep '[[:digit:]]\+' -o | tail -n1)
+		str1=-1
+		flag=1
+	fi
+
+	value=$(echo $diskpart | grep -E 'sd|hd')
+	if [ $? -eq 0 ];
+	then
+		str=`echo ${diskpart//[0-9]}`
+		str1=`echo ${str:0-1}`
+		local order=$(echo "$diskpart" | grep '[[:digit:]]\+' -o | head -n1)
+		flag=0
+	fi
+
+	for i in {a..z}
+	do
+		if [[ $str1 != -1 && "$str1" == "$i" ]];
+		then
+			disk=$index
+		fi
+
+		((index++))
+
+		if [ "$order" == "$index" ];
+		then
+			part=$i
+			break
+		fi
+	done
+
+	if [ $flag == 1 ]
+	then
+		wdpart="nvme$disk$part"
+	else
+		wdpart="wd$disk$part"
+	fi
+
+	echo $wdpart
+}
+
 # FIXME: switch to check boot.cfg file can be written to
 # User is unprivileged
 if [ "$(id -u)" -ne 0 ]
@@ -66,17 +117,20 @@ fi
 # Setting defaults if /etc/default/pmon-update is missing
 
 PMON_ALTERNATIVES="${PMON_ALTERNATIVES:-default recovery}"
-PMON_BOOTDEV="${PMON_BOOTDEV:-(wd0,0)}"
 PMON_DEFAULT="${PMON_DEFAULT:-0}"
 PMON_ENTRIES="${PMON_ENTRIES:-all}"
 PMON_TIMEOUT="${PMON_TIMEOUT:-5}"
-PMON_MENU_LABEL="${PMON_MENU_LABEL:-Debian GNU/Linux kernel}"
+PMON_MENU_LABEL="${PMON_MENU_LABEL:-Loongnix-20 GNU/Linux kernel}"
 PMON_PARAMETERS="${PMON_PARAMETERS:-ro quiet}"
 
-# Find parameter for root from fstab
-if [ -z "${PMON_ROOT}" ]
+BOOTDEV=($(LANG= df ${_PMON_DIRECTORY} --output=source))
+BOOTDEV=${BOOTDEV[1]}
+WD_BOOTDEV=$(disk2wd ${BOOTDEV})
+
+# Find parameter for root and boot from /etc/fstab
+if [ -e /etc/fstab ]
 then
-	# Find root partition
+	# Find root and boot partition
 	while read _LINE
 	do
 
@@ -89,13 +143,22 @@ EOF
 			case "${_FS_SPEC}" in
 				"#"*) ;;
 				*) PMON_ROOT="root=${_FS_SPEC}"
-				   break ;;
+					continue ;;
+			esac
+		fi
+
+		if [ "${_FS_FILE}" = "${_PMON_DIRECTORY}" ]
+		then
+			case "${_FS_SPEC}" in
+				"#"*) ;;
+				*) PMON_BOOTDEV="/dev/fs/${_FS_VFSTYPE}@${WD_BOOTDEV}"
+					continue ;;
 			esac
 		fi
 	done < /etc/fstab
 fi
 
-# if not in fsrab, try from current kernel arguments
+# if not in fstab, try from current kernel arguments
 if [ -z "${PMON_ROOT}" ]
 then
 	for param in `cat /proc/cmdline`
@@ -108,6 +171,13 @@ then
 	done
 fi
 
+# if not in fstab, get from df command
+if [ -z "${PMON_BOOTDEV}" ]
+then
+	BOOT_FSTYPE=($(LANG= df ${_PMON_DIRECTORY} --output=fstype))
+	BOOT_FSTYPE=${BOOT_FSTYPE[1]}
+	PMON_BOOTDEV="/dev/fs/${BOOT_FSTYPE}@${WD_BOOTDEV}"
+fi
 
 # Create extlinux.conf
 _CONFIG="\
